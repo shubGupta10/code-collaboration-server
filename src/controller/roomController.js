@@ -2,34 +2,36 @@ import roomModel from "../model/roomModel.js";
 
 export const createRoom = async (req, res) => {
     try {
-        const {roomId, userId} = await req.body;
-        if(!roomId || !userId){
-            return res.status(400).json({
-                error: "Room Id and UserId is needed"
-            })
+        const { roomId, userId } = req.body; 
+
+        if (!roomId || !userId) {
+            return res.status(400).json({ error: "Room Id and UserId are required" });
         }
 
-        const room = await roomModel.findOne({roomId})
-        if(!room){
-             room = new roomModel({roomId, users: [userId]});
-             await room.save();
-        }else{
+        let room = await roomModel.findOne({ roomId });
+
+        if (!room) {
+            room = new roomModel({ roomId, users: [userId] });
+            await room.save();
+        } else {
             if (!room.users.includes(userId)) {
                 room.users.push(userId);
                 await room.save();
             }
         }
+
         return res.status(200).json({ message: "Room created/joined successfully.", room });
     } catch (error) {
-        console.error(" Error in createRoom:", error.message);
+        console.error("Error in createRoom:", error.message);
         return res.status(500).json({ error: "Internal Server Error" });
     }
-}
+};
+
 
 export const joinRoom = async (req, res) => {
     try {
-        const {roomId} = await req.params;
-        const {userId} = await req.body;
+        // const {roomId} = await req.params;
+        const {userId, roomId} =  req.body;
 
         if(!roomId || !userId){
             return res.status(400).json({
@@ -50,7 +52,7 @@ export const joinRoom = async (req, res) => {
             })
         }
 
-        room.users.push(roomId);
+        room.users.push(userId); 
         await room.save();
 
         return res.status(200).json({

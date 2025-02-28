@@ -1,44 +1,46 @@
-import {Server} from 'socket.io'
+import { Server } from 'socket.io';
 
 let io;
 
-export const  initializeSocket = (server) => {
+export const initializeSocket = (server) => {
     io = new Server(server, {
         cors: {
             origin: process.env.FRONTEND_URL,
-            methods: ["GET", "POST"]
-        }
-    })
+            methods: ["GET", "POST"],
+        },
+    });
 
     io.on("connection", (socket) => {
         console.log(`User connected successfully ${socket.id}`);
-        
-        //handling joining a room
-        socket.on("joinroom", ({roomId, userId}) => {
+
+        // Handling joining a room
+        socket.on("joinroom", ({ roomId, userId }) => {
+            if (!roomId || !userId) return; 
             socket.join(roomId);
             console.log(`User ${userId} joined room ${roomId}`);
-            io.to(roomId).emit("UserJoined", {userId})
-        })
+            io.to(roomId).emit("UserJoined", { userId });
+        });
 
-        //handle real time code updates
-        socket.on("codeChange", ({roomId, code}) => {
+        // Handle real-time code updates
+        socket.on("codeChange", ({ roomId, code }) => {
+            if (!roomId) return;
             console.log(`Code update in room ${roomId}`);
-            socket.to(roomId).emit("codeUpdate", {code})
-        })
+            socket.to(roomId).emit("codeUpdate", { code });
+        });
 
-        //handle user leaving
-        socket.on("leaveRoom", ({roomId, userId}) => {
+        // Handle user leaving
+        socket.on("leaveRoom", ({ roomId, userId }) => {
+            if (!roomId || !userId) return;
             socket.leave(roomId);
             console.log(`User ${userId} left room ${roomId}`);
-            io.to(roomId).emit("userLeft", {userId})
-        })
+            io.to(roomId).emit("userLeft", { userId });
+        });
 
-        //handle client disconnecting
-        socket.on("disconnected", ()=> {
+        // Handle client disconnecting
+        socket.on("disconnect", () => {
             console.log(`User disconnected: ${socket.id}`);
-            
-        })
-    })
-}
+        });
+    });
+};
 
 export const getIO = () => io;

@@ -1,25 +1,24 @@
-import mongoose, { mongo } from 'mongoose'
-
+import mongoose from 'mongoose';
 
 const roomSchema = new mongoose.Schema({
     roomId: {
-        type: "String",
+        type: String,
         required: true,
         unique: true,
     },
-    userId: {
-        type: "String",
+    users: {   // ✅ Store multiple users in an array
+        type: [String], 
         required: true,
-        unique: true,
+        default: [],  // ✅ Ensures an empty array is initialized
     },
     createdAt: {
         type: Date,
-        default: Date.now()
+        default: Date.now
     },
     updatedAt: {
         type: Date,
-        default: Date.now()
+        default: Date.now
     }
-})
+});
 
 export default mongoose.model("Room", roomSchema);

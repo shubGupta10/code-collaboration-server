@@ -4,7 +4,7 @@ import { createRoom, deleteRoom, getRoomDetails, joinRoom, leaveRoom } from '../
 const roomRouter = express.Router()
 
 roomRouter.post("/create-room", createRoom);
-roomRouter.post("/join-room/:roomId", joinRoom);
+roomRouter.post("/join-room", joinRoom);
 roomRouter.get("/get-room-details/:roomId", getRoomDetails);
 roomRouter.post("/leave-room/:roomId", leaveRoom);
 roomRouter.delete("delete-room/:roomId", deleteRoom);

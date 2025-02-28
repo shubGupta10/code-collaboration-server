@@ -21,8 +21,8 @@ app.use(cors({
 }))
 app.use(express.json())
 
-app.use("/api/room", roomRouter);
-app.use("/api/code", codeRouter);
+app.use("/room", roomRouter);
+app.use("/code", codeRouter);
 
 
 app.get("/", (req, res) => {
