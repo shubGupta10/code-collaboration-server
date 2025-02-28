@@ -1,0 +1,23 @@
+{
+  "name": "code-collaboration-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@upstash/redis": "^1.34.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.11.0",
+    "nodemon": "^3.1.9",
+    "socket.io": "^4.8.1"
+  }
+}
